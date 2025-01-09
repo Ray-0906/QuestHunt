@@ -1,0 +1,14 @@
+.sparkle {
+    background-image: radial-gradient(circle, rgba(255, 255, 255, 0.7) 20%, transparent 30%);
+    animation: sparkle 1.5s infinite;
+  }
+  
+  @keyframes sparkle {
+    0%, 100% {
+      transform: translate(-10%, -10%);
+    }
+    50% {
+      transform: translate(10%, 10%);
+    }
+  }
+  

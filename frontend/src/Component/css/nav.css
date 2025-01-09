@@ -1,0 +1,32 @@
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap');
+
+.solo-leveling-nav {
+  font-family: 'Orbitron', sans-serif;
+  background: linear-gradient(to right, #0f0c29, #302b63, #24243e);
+  color: #fff;
+  text-shadow: 0 0 5px #00ffff;
+}
+
+.solo-leveling-logo {
+  font-weight: 700;
+  font-size: 1.5rem;
+  background: linear-gradient(to right, #00ffff, #0080ff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.solo-leveling-button {
+  transition: all 0.3s ease;
+}
+
+.solo-leveling-button:hover {
+  color: #00ffff;
+  text-shadow: 0 0 10px #00ffff;
+}
+
+.solo-leveling-menu {
+  background: rgba(15, 12, 41, 0.9);
+  backdrop-filter: blur(10px);
+  border: 1px solid #00ffff;
+}
+

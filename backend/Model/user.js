@@ -1,48 +1,30 @@
-const { required } = require('joi');
-const mongoose=require('mongoose');
+const mongoose = require('mongoose')
 
-const userSchema= new mongoose.Schema({
-    name:{
-        type:String,
-        required:true
-    }, 
-    characterLevel: {
-        type: Number,
-        required: true,
-        default: 1
-      },
-      totalXP: {
-        type: Number,
-        required: true,
-        default: 0
-      },
-      stats: {
-        vitality: {
-          level: { type: Number, required: true, default: 1 },
-          currentXP: { type: Number, required: true, default: 0 }
-        },
-        wisdom: {
-          level: { type: Number, required: true, default: 1 },
-          currentXP: { type: Number, required: true, default: 0 }
-        },
-        discipline: {
-          level: { type: Number, required: true, default: 1 },
-          currentXP: { type: Number, required: true, default: 0 }
-        },
-        creativity: {
-          level: { type: Number, required: true, default: 1 },
-          currentXP: { type: Number, required: true, default: 0 }
-        }
-      },
-      createdAt: {
-        type: Date,
-        default: Date.now
-      },
-      updatedAt: {
-        type: Date,
-        default: Date.now
-      }
-})
+const UserSchema = new mongoose.Schema({
+  username: { type: String, required: true, unique: true },
+  email: { type: String, required: true, unique: true },
+  password: { type: String, required: true }, // Hashed password
 
-const User=mongoose.model('User',userSchema);
-module.exports={User};
+  profile: {
+    avatar: { type: String, default: "" },
+    level: { type: Number, default: 1 },
+    exp:{ type: Number, default: 0 },
+    stats: {
+      strength: { type: Number, default: 0 },
+      dexterity: { type: Number, default: 0 },
+      intelligence: { type: Number, default: 0 },
+      charisma: { type: Number, default: 0 },
+    },
+    current_missions: [{ type: mongoose.Schema.Types.ObjectId, ref: "Mission" }],
+    achievements: [{ type: mongoose.Schema.Types.ObjectId, ref: "Achievement" }]
+  },
+  streak: {
+    mission_id: { type: mongoose.Schema.Types.ObjectId, ref: "Mission" },
+    current_streak: { type: Number, default: 0 },
+    last_completed_date: { type: Date }
+  },
+
+},
+{timestamps:true});
+const User= mongoose.model("User", UserSchema);
+module.exports ={User}
