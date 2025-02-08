@@ -31,7 +31,7 @@ const StatusCard = () => {
 
   return (
     <div className="relative bg-[#0a0a15]/95 backdrop-blur-sm mx-auto p-8 max-w-2xl rounded-2xl 
-      border border-blue-500/30 shadow-2xl shadow-blue-900/30
+      md:border md:border-blue-500/30 shadow-2xl shadow-blue-900/30
       font-mono before:absolute before:inset-0 before:bg-[linear-gradient(130deg,#00f6ff12_35%,#0000_65%)]">
       
       {/* Glowing Border Effect */}

@@ -1,30 +1,39 @@
 import React, { useState } from "react";
 import { Label } from "./ui/label";
 import { Input } from "./ui/input";
-import { IconBrandGithub, IconBrandGoogle, IconBrandOnlyfans } from "@tabler/icons-react";
 import { useDispatch } from "react-redux";
 import { loginUser } from "../service/auth";
 import { Link } from "react-router";
-
+import SoloLoading from "./Loading";
+import { toast } from "react-toastify";
 
 // Utility function for conditional class names
 const cn = (...classes) => classes.filter(Boolean).join(" ");
 
 export function LogInDemo() {
-    
+  const [isLoading, setIsLoading] = useState(false);
      const [email, setEmail] = useState("");
       const [password, setPassword] = useState("");
       const dispatch = useDispatch();
 
-  const handleSubmit = async (e) => {
-      e.preventDefault();
-      await dispatch(loginUser(email, password));
-    };
+      const handleSubmit = async (e) => {
+        e.preventDefault();
+        setIsLoading(true);
+      
+        try {
+          await dispatch(loginUser(email, password));
+           // Show success message
+        } catch (error) {
+          toast.error(error?.message || "Login failed. Please try again! ❌"); // Show error message
+        } finally {
+          setIsLoading(false);
+        }
+      };
 
   return (
-    <div className="max-w-md w-full mx-auto rounded-none md:rounded-2xl p-4 md:p-8 shadow-input bg-white dark:bg-black">
-     
-     <div className="bg-gradient-to-r from-transparent via-neutral-300 dark:via-neutral-700 to-transparent my-8 h-[1px] w-full" />
+    <div className="max-w-md w-full mx-auto rounded-none md:rounded-2xl p-4 md:p-8 shadow-input bg-opacity-35  dark:bg-black">
+     {isLoading && <SoloLoading />}
+     <div className="bg-gradient-to-r bg-opacity-35 from-transparent via-neutral-300 dark:via-neutral-700 to-transparent my-8 h-[1px] w-full" />
      <h2 className="text-3xl text-center font-bold text-transparent bg-clip-text bg-gradient-to-br from-blue-400 to-cyan-400 tracking-widest uppercase mb-4">
           SYSTEM ACCESS
         </h2>
@@ -60,9 +69,9 @@ export function LogInDemo() {
 
         
       </form>
-      <p className="text-neutral-600 text-sm max-w-sm  dark:text-neutral-300">
+      <p className="text-neutral-600 text-center text-sm max-w-sm  dark:text-neutral-300">
        
-      Not in the system yet? Awaken your journey now—<Link to={'/signup'} className="text-transparent bg-clip-text bg-gradient-to-br from-blue-400 to-cyan-400 tracking-widest">Sign Up</Link> <br />
+      Not in the system yet? <br/>Awaken your journey now—<Link to={'/signup'} className="text-transparent bg-clip-text bg-gradient-to-br from-blue-400 to-cyan-400 tracking-widest">Sign Up</Link> <br />
         and step into the hunt!
       </p>
     </div>

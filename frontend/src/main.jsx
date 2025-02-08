@@ -13,11 +13,19 @@ import Mission from './Pages/Mission.jsx';
 import AuthLayout from './Component/Authlayout.jsx';
 import Home from './Pages/home.jsx';
 import Ranking from './Pages/Ranking.jsx';
-Ranking
+import ScrollToTop from './Component/ScrollFix.jsx';
+
+const Layout = () => (
+  <>
+    <ScrollToTop />
+    <App />
+  </>
+);
+
 const router = createBrowserRouter([
   {
     path: '/',
-    element: <App />,
+    element: <Layout />,
     children: [
       { path: '/', element: 
         <Home />

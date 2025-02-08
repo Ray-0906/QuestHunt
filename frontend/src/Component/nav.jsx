@@ -27,7 +27,7 @@ const Navbar = () => {
   
 
   return (
-    <nav className="bg-inherit shadow-lg fixed w-full z-50">
+    <nav className=" bg-gradient-to-b from-black via-gray-900 to-black border-y-2 border-blue-900/50 shadow-[0_0_50px_theme(colors.blue.900/0.3) shadow-lg fixed w-full z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16">
           {/* Logo and mobile menu button */}
@@ -121,8 +121,14 @@ const Navbar = () => {
               {isLoggedIn ? (
                 <>
                   <div className="flex items-center px-3 py-4">
-                    <div className="h-10 w-10 bg-gradient-to-r from-purple-500 to-blue-500 rounded-full" />
-                    <span className="ml-3 text-purple-300">{user}</span>
+                  <Link to={"/profile"} className="flex items-center space-x-2"> 
+                <img
+                                            src={"./mc.png"}
+                                            className="w-7 h-7 rounded-full border-2 border-blue-900/50"
+                                            alt={user.username}
+                                        />
+                <span className="text-purple-300 text-sm">{user}</span>
+                </Link>
                   </div>
                   <button
                     onClick={handleLogout}

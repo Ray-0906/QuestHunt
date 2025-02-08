@@ -4,8 +4,10 @@ import { handleAuthCheck } from "../service/auth";
 import { useDispatch } from "react-redux";
 import { addMission } from "../store/authSlice";
 import { useNavigate } from "react-router";
+import SoloLoading from "./Loading";
 
 const MissionForm = () => {
+  const [isLoading, setIsLoading] = useState(false);
   const [mission, setMission] = useState({
     title: "",
     description: "",
@@ -40,6 +42,8 @@ const MissionForm = () => {
   };
 
   const submitMission = async (e) => {
+    e.preventDefault();
+    setIsLoading(true);
     try {
       //console.log(mission);
       const addedMission = await addMissionAPI(mission);
@@ -58,6 +62,8 @@ const MissionForm = () => {
     } catch (error) {
       console.error("Error submitting mission");
     }
+    finally{
+      setIsLoading(false);}
   };
 
   useEffect(() => {
@@ -71,7 +77,7 @@ const MissionForm = () => {
       before:absolute before:inset-0 before:bg-[linear-gradient(130deg,#00f6ff12_35%,#0000_65%)]
       before:pointer-events-none">
       
-      
+      {isLoading && <SoloLoading />}
       {/* Glowing Border Effect */}
       <div className="absolute inset-0 rounded-2xl pointer-events-none 
         border border-blue-500/20 shadow-[inset_0_0_20px_rgba(0,198,255,0.1)]" />
@@ -151,53 +157,54 @@ const MissionForm = () => {
           // OBJECTIVE PROTOCOLS
         </h2>
 
-        <div className="flex gap-4 mb-6">
-          <input
-            type="text"
-            name="name"
-            placeholder="OBJECTIVE NAME"
-            value={quest.name}
-            onChange={handleQuestChange}
-            className="flex-1 p-4 bg-black/30 border-2 border-blue-900/50 rounded-lg 
-              text-blue-200/90 focus:outline-none focus:border-cyan-400/60
-              focus:shadow-glow-blue transition-all placeholder-blue-600/70"
-          />
-          
-          <select
-            name="stat"
-            value={quest.stat}
-            onChange={handleQuestChange}
-            className="p-4 bg-black/30 border-2 border-blue-900/50 rounded-lg 
-              text-blue-200/90 focus:outline-none focus:border-cyan-400/60
-              focus:shadow-glow-blue transition-all w-40"
-          >
-            <option value="strength" className="bg-black/90">MIGHT</option>
-            <option value="dexterity" className="bg-black/90">AGILITY</option>
-            <option value="intelligence" className="bg-black/90">ARCANA</option>
-            <option value="charisma" className="bg-black/90">CHARISMA</option>
-          </select>
+        <div className="flex flex-wrap gap-4 mb-6 md:flex-nowrap">
+  <input
+    type="text"
+    name="name"
+    placeholder="OBJECTIVE NAME"
+    value={quest.name}
+    onChange={handleQuestChange}
+    className="flex-1 min-w-0 p-4 bg-black/30 border-2 border-blue-900/50 rounded-lg 
+      text-blue-200/90 focus:outline-none focus:border-cyan-400/60
+      focus:shadow-glow-blue transition-all placeholder-blue-600/70 w-full"
+  />
+  
+  <select
+    name="stat"
+    value={quest.stat}
+    onChange={handleQuestChange}
+    className="p-4 bg-black/30 border-2 border-blue-900/50 rounded-lg 
+      text-blue-200/90 focus:outline-none focus:border-cyan-400/60
+      focus:shadow-glow-blue transition-all w-full md:w-40"
+  >
+    <option value="strength" className="bg-black/90">MIGHT</option>
+    <option value="dexterity" className="bg-black/90">AGILITY</option>
+    <option value="intelligence" className="bg-black/90">ARCANA</option>
+    <option value="charisma" className="bg-black/90">CHARISMA</option>
+  </select>
 
-          <input
-            type="number"
-            name="exp"
-            placeholder="XP"
-            value={quest.exp}
-            onChange={handleQuestChange}
-            className="w-24 p-4 bg-black/30 border-2 border-blue-900/50 rounded-lg 
-              text-blue-200/90 focus:outline-none focus:border-cyan-400/60
-              focus:shadow-glow-blue transition-all"
-          />
+  <input
+    type="number"
+    name="exp"
+    placeholder="XP"
+    value={quest.exp}
+    onChange={handleQuestChange}
+    className="p-4 bg-black/30 border-2 border-blue-900/50 rounded-lg 
+      text-blue-200/90 focus:outline-none focus:border-cyan-400/60
+      focus:shadow-glow-blue transition-all w-full md:w-24"
+  />
 
-          <button
-            type="button"
-            onClick={addQuest}
-            className="px-6 bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-500 hover:to-cyan-500 
-              text-white font-bold rounded-lg shadow-glow-blue-lg transition-all
-              flex items-center justify-center"
-          >
-            INSERT
-          </button>
-        </div>
+  <button
+    type="button"
+    onClick={addQuest}
+    className="px-6 py-4 bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-500 hover:to-cyan-500 
+      text-white font-bold rounded-lg shadow-glow-blue-lg transition-all
+      flex items-center justify-center w-full md:w-auto"
+  >
+    INSERT
+  </button>
+</div>
+
 
         {/* Quest List */}
         <div className="space-y-4">

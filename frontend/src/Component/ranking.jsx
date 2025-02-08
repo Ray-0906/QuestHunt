@@ -3,13 +3,15 @@ import { IconCrown, IconSword, IconShield, IconStar, IconArrowRight } from '@tab
 import { getRankings } from '../service/feature';
 import { getLevelDetails } from '../service/maths';
 import { useSelector } from 'react-redux';
+import SoloLoading from './Loading';
 
 const RankingLeaderboard = () => {
     const [currentUsername, setcurrentUsername] = useState("");
     const data1 = useSelector((state) => state.auth.userData);
     const [users, setUsers] = useState([]);
-
+    const [isLoading, setIsLoading] = useState(false);
     useEffect(() => {
+        setIsLoading(true);
         if (data1?.username) {
             setcurrentUsername(data1.username);
         }
@@ -23,9 +25,13 @@ const RankingLeaderboard = () => {
             } catch (error) {
                 console.error('Failed to get Rankings:', error);
             }
+            finally{
+                setIsLoading(false);
+            }
         };
 
         fetchRankings();
+
     }, []);
     const currentPosition = useMemo(() => {
         const index = users.findIndex(u => u.username === currentUsername);
@@ -33,6 +39,7 @@ const RankingLeaderboard = () => {
     }, [users, currentUsername]);
     return (
         <div className="relative bg-[#0a0a15]/95 backdrop-blur-sm rounded-2xl border-2 border-blue-500/30 shadow-2xl shadow-blue-900/30 overflow-hidden">
+            {isLoading && <SoloLoading />}
             {/* Animated Grid Background */}
             <div className="absolute inset-0 opacity-20" style={{
                 backgroundImage: `
@@ -65,7 +72,7 @@ const RankingLeaderboard = () => {
                     <tbody>
                         {users.map((user, index) => (
                             <tr
-                                key={user._id}
+                                key={index}
                                 className="group border-b border-blue-900/50 hover:bg-blue-900/10 transition-all duration-300"
                             >
                                 {/* Rank Column */}

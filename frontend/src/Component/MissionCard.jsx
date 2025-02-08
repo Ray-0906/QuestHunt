@@ -4,8 +4,10 @@ import { removeMission, updateExp, updateStats } from "../store/authSlice";
 
 import { useDispatch } from "react-redux";
 import QuestRewardPopup from "./Rpopup";
+import SoloLoading from "./Loading";
 
 const MissionCard = ({ missionId }) => {
+   const [isLoading, setIsLoading] = useState(false);
   const [mission, setMission] = useState(null);
   const [quests, setQuests] = useState([]);
   const [streak, setStreak] = useState(0);
@@ -14,6 +16,7 @@ const MissionCard = ({ missionId }) => {
   const [reward, setReward] = useState(0);
   const dispatch=useDispatch();
   useEffect(() => {
+    setIsLoading(true);
     const fetchMissionData = async () => {
       try {
         const missionData = await getMission(missionId);
@@ -29,6 +32,9 @@ const MissionCard = ({ missionId }) => {
         setQuestCompletion(initialCompletion);
       } catch (error) {
         console.error("Error fetching mission data:", error);
+      }
+      finally{
+        setIsLoading(false);
       }
     };
 
@@ -64,6 +70,7 @@ try {
   if (!mission) {
     return (
       <div className="w-80 h-96 mx-auto p-4 bg-black/90 text-white rounded-lg border-2 border-blue-500/50 shadow-glow-blue animate-pulse">
+         {isLoading && <SoloLoading />}
         <p className="text-lg text-blue-400/80 font-mono tracking-widest">
           INITIALIZING MISSION...
         </p>
@@ -75,7 +82,7 @@ try {
     <div className="w-72 md:w-[20rem] h-98 mx-auto p-4 bg-[#0a0a15]/95 backdrop-blur-sm rounded-lg 
       border-2 border-blue-500/30 shadow-2xl shadow-blue-900/30
       font-mono relative overflow-hidden before:absolute before:inset-0 before:bg-[linear-gradient(130deg,#00f6ff12_35%,#0000_65%)]">
-      
+      {isLoading && <SoloLoading />}
       {/* Mission Header */}
       <div className="border-b border-blue-900/50 pb-3 mb-4 relative">
         <div className="absolute -bottom-px left-0 right-0 h-px bg-gradient-to-r from-transparent via-blue-600 to-transparent" />

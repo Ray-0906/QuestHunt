@@ -5,35 +5,43 @@ import { Input } from "./ui/input";
 import { useDispatch } from "react-redux";
 import { signupUser } from "../service/auth";
 import { Link } from "react-router";
+import SoloLoading from "./Loading";
 
 // Utility function for conditional class names
 const cn = (...classes) => classes.filter(Boolean).join(" ");
 
 export function SignupFormDemo() {
-    
+    const [isLoading, setIsLoading] = useState(false);
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const dispatch = useDispatch();
-
+    
   const handleSubmit = async (e) => {
       e.preventDefault();
-  
-      // Dispatch the signup action
-      await dispatch(signupUser(name, email, password));
+      setIsLoading(true);
+  try {
+    await dispatch(signupUser(name, email, password));
+  } catch (error) {
+    
+  }
+    finally{
+    setIsLoading(false);
+    }  
+      
     };
 
   return (
-    <div className="max-w-md w-full mx-auto rounded-none md:rounded-2xl p-4 md:p-8 shadow-input bg-white dark:bg-black">
-     
-     <div className="bg-gradient-to-r from-transparent via-neutral-300 dark:via-neutral-700 to-transparent my-8 h-[1px] w-full" />
+    <div className="max-w-md w-full mx-auto rounded-none md:rounded-2xl p-4 md:p-8 shadow-input bg-opacity-35 dark:bg-black">
+     {isLoading && <SoloLoading />}
+     <div className="bg-opacity-35 bg-gradient-to-r from-transparent via-neutral-300 dark:via-neutral-700 to-transparent my-8 h-[1px] w-full" />
      <h2 className="text-3xl text-center font-bold text-transparent bg-clip-text bg-gradient-to-br from-blue-400 to-cyan-400 tracking-widest uppercase mb-4">
           SYSTEM ACCESS
         </h2>
       <p className="text-neutral-600 text-sm max-w-sm mt-2 dark:text-neutral-300">
       Every hunter starts somewhere. Forge your path, awaken your power—Sign Up and begin your ascent!
       </p>
-      <form className="my-8" onSubmit={handleSubmit}>
+      <form className="my-8 " onSubmit={handleSubmit}>
         <LabelInputContainer>
             <Label htmlFor="lastname">Hunter Name :</Label>
             <Input id="lastname" placeholder="Sung Jin woo" type="text"
@@ -69,9 +77,9 @@ export function SignupFormDemo() {
 
         
       </form>
-      <p className="text-neutral-600 text-sm max-w-sm  dark:text-neutral-300">
+      <p className="text-neutral-600 text-center text-sm max-w-sm  dark:text-neutral-300">
        
-      You have been chosen. The system recognizes you—<Link to={'/login'} className="text-transparent bg-clip-text bg-gradient-to-br from-blue-400 to-cyan-400 tracking-widest">Log In</Link> <br />
+      You have been chosen. <br/> The system recognizes you—<Link to={'/login'} className="text-transparent bg-clip-text bg-gradient-to-br from-blue-400 to-cyan-400 tracking-widest font-semibold">Log In</Link> <br />
       and embrace your destiny!
       </p>
     </div>
