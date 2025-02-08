@@ -1,7 +1,7 @@
 const {User}=require('../Model/user')
 const {Quest}=require('../Model/Quest')
 
-const updateUserStats = async (userId, questId) => {
+const updateUserStats = async (userId, questId,flag) => {
   try {
     // Fetch the quest details
     const quest = await Quest.findById(questId);
@@ -26,6 +26,9 @@ const updateUserStats = async (userId, questId) => {
     }
     user.profile.stats[stat] += exp;
 
+    if(flag){
+      user.profile.exp += exp;
+    }
     // Save the user
     await user.save();
 
@@ -33,6 +36,7 @@ const updateUserStats = async (userId, questId) => {
       success: true,
       message: `User's ${stat} stat increased by ${exp}.`,
       updatedStats: user.profile.stats,
+      updatedExp: user.profile.exp,
     };
   } catch (error) {
     console.error('Error updating user stats:', error.message);
@@ -43,6 +47,7 @@ const updateUserStats = async (userId, questId) => {
     };
   }
 };
+
 
 
 // Add Reward on Mission completion 
@@ -60,7 +65,7 @@ const addUserReward = async (userId, rewardPoints, missionId) => {
     }
 
     // Add reward points to user's exp
-    user.profile.exp += (2*rewardPoints);
+    user.profile.exp += (rewardPoints);
 
     // Example: Distribute reward points across stats (you can adjust this logic)
     user.profile.stats.strength += Math.floor(rewardPoints / 4);
@@ -83,7 +88,7 @@ await user.save();
       message: `User rewarded with ${rewardPoints} points. EXP and stats updated.`,
       isCompleted:true,
       updatedStats: user.profile.stats,
-      updatedExp: user.profile.Userexp,
+      updatedExp: user.profile.exp,
     };
   } catch (error) {
     console.error('Error adding rewards to user:', error);

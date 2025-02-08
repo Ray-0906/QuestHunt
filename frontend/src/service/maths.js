@@ -1,5 +1,6 @@
 export function getLevelDetails(totalExp, baseExp = 10, growthFactor = 1.5) {
     // Helper function to calculate total XP required for a specific level
+    
     const getExpForLevel = (level) => Math.floor(baseExp * Math.pow(level, growthFactor));
   
     // Determine current level

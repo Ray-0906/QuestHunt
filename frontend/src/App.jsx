@@ -1,15 +1,13 @@
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 import { handleAuthCheck, initializeAuth } from './service/auth'
-import LogoutButton from './Component/logout';
-import StatusCard from './Component/Profile';
-import { SignupFormDemo } from './Component/SignUp1';
-import { LogInDemo } from './Component/login1';
-import MissionForm from './Component/addMission';
-import Carousel from './Component/Cardslider';
-import MissionCard from './Component/MissionCard';
-import SoloLevelingNavbar from './Component/nav';
+
 import { Outlet } from 'react-router-dom';
+import Navbar from './Component/nav';
+import SoloLevelingBackground from './Component/bg';
+import SoloLevelingFooter from './Component/Footer';
+
+
 function App() {
   const dispatch = useDispatch();
 
@@ -17,14 +15,20 @@ function App() {
     dispatch(initializeAuth());
     dispatch(handleAuthCheck);
   }, [dispatch]);
-  
+ 
   return (
     <>
-    <div className='min-h-screen w-full bg-black'>
-      <SoloLevelingNavbar/>
+     <div className="flex flex-col w-full min-h-screen">
+     <SoloLevelingBackground/>
+     <Navbar/>
+     <main className="flex-grow w-full">
+
+
       <Outlet/>
+      </main>
+      <SoloLevelingFooter />
     </div>
-    
+   
     </>
   )
 }

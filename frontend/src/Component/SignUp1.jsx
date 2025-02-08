@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import { Label } from "./ui/label";
 import { Input } from "./ui/input";
-import { IconBrandGithub, IconBrandGoogle, IconBrandOnlyfans } from "@tabler/icons-react";
+
 import { useDispatch } from "react-redux";
 import { signupUser } from "../service/auth";
+import { Link } from "react-router";
 
 // Utility function for conditional class names
 const cn = (...classes) => classes.filter(Boolean).join(" ");
@@ -26,29 +27,29 @@ export function SignupFormDemo() {
     <div className="max-w-md w-full mx-auto rounded-none md:rounded-2xl p-4 md:p-8 shadow-input bg-white dark:bg-black">
      
      <div className="bg-gradient-to-r from-transparent via-neutral-300 dark:via-neutral-700 to-transparent my-8 h-[1px] w-full" />
-      <h2 className="font-bold text-xl text-neutral-800 dark:text-neutral-200">
-        Welcome to QuestHunt
-      </h2>
+     <h2 className="text-3xl text-center font-bold text-transparent bg-clip-text bg-gradient-to-br from-blue-400 to-cyan-400 tracking-widest uppercase mb-4">
+          SYSTEM ACCESS
+        </h2>
       <p className="text-neutral-600 text-sm max-w-sm mt-2 dark:text-neutral-300">
-        Login to QuestHunt if you can because we don&apos;t have a login flow yet
+      Every hunter starts somewhere. Forge your path, awaken your power—Sign Up and begin your ascent!
       </p>
       <form className="my-8" onSubmit={handleSubmit}>
         <LabelInputContainer>
-            <Label htmlFor="lastname">Username :</Label>
-            <Input id="lastname" placeholder="Durden" type="text"
+            <Label htmlFor="lastname">Hunter Name :</Label>
+            <Input id="lastname" placeholder="Sung Jin woo" type="text"
             value={name}
             onChange={(e) => setName(e.target.value)}
             required
             />
           </LabelInputContainer>
         <LabelInputContainer className="mb-4">
-          <Label htmlFor="email">Email :</Label>
-          <Input id="email" placeholder="projectmayhem@fc.com" type="email" value={email}
+          <Label htmlFor="email">Hunter Mail :</Label>
+          <Input id="email" placeholder="hunter@system.gov" type="email" value={email}
         onChange={(e) => setEmail(e.target.value)}
         required />
         </LabelInputContainer>
         <LabelInputContainer className="mb-4">
-          <Label htmlFor="password">Password :</Label>
+          <Label htmlFor="password">Mana Signature :</Label>
           <Input id="password" placeholder="••••••••" type="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
@@ -68,6 +69,11 @@ export function SignupFormDemo() {
 
         
       </form>
+      <p className="text-neutral-600 text-sm max-w-sm  dark:text-neutral-300">
+       
+      You have been chosen. The system recognizes you—<Link to={'/login'} className="text-transparent bg-clip-text bg-gradient-to-br from-blue-400 to-cyan-400 tracking-widest">Log In</Link> <br />
+      and embrace your destiny!
+      </p>
     </div>
   );
 }

@@ -3,6 +3,7 @@ import { addQuestAPI, addMissionAPI } from "../service/feature";
 import { handleAuthCheck } from "../service/auth";
 import { useDispatch } from "react-redux";
 import { addMission } from "../store/authSlice";
+import { useNavigate } from "react-router";
 
 const MissionForm = () => {
   const [mission, setMission] = useState({
@@ -12,6 +13,7 @@ const MissionForm = () => {
     difficulty: "easy",
     quests: [],
   });
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const [quest, setQuest] = useState({ name: "", stat: "strength", exp: "" });
   const [questList, setQuestList] = useState([]);
@@ -52,6 +54,7 @@ const MissionForm = () => {
         quests: [],
       });
       setQuestList([]);
+      navigate('/quests');
     } catch (error) {
       console.error("Error submitting mission");
     }
@@ -62,121 +65,172 @@ const MissionForm = () => {
   }, []);
 
   return (
-    <div className="max-w-3xl mx-auto p-6 bg-gradient-to-b from-black via-gray-900 to-black text-white rounded-lg shadow-xl border-4 border-blue-600 font-sans">
-      <h1 className="text-3xl font-extrabold mb-6 text-center text-blue-400 tracking-wide uppercase">
-        Create a Mission
+    <div className="max-w-3xl mx-auto p-8 bg-[#0a0a15]/95 backdrop-blur-sm rounded-2xl 
+      border-2 border-blue-500/30 shadow-2xl shadow-blue-900/30
+      font-mono relative overflow-hidden 
+      before:absolute before:inset-0 before:bg-[linear-gradient(130deg,#00f6ff12_35%,#0000_65%)]
+      before:pointer-events-none">
+      
+      
+      {/* Glowing Border Effect */}
+      <div className="absolute inset-0 rounded-2xl pointer-events-none 
+        border border-blue-500/20 shadow-[inset_0_0_20px_rgba(0,198,255,0.1)]" />
+
+      <h1 className="text-4xl font-bold text-center mb-10 text-transparent bg-clip-text 
+        bg-gradient-to-br from-blue-400 via-blue-300 to-cyan-400 tracking-widest
+        drop-shadow-[0_0_8px_rgba(0,198,255,0.4)] uppercase">
+        INITIATE GATE CREATION
       </h1>
 
       {/* Mission Details */}
-      <div className="space-y-4">
+      <div className="space-y-6 mb-12">
         <div>
-          <label className="block text-sm font-medium text-blue-300">Mission Title</label>
+          <label className="block text-sm text-blue-400/80 mb-2 tracking-wider">⫸ GATE TITLE</label>
           <input
             type="text"
             name="title"
             value={mission.title}
             onChange={handleMissionChange}
-            className="w-full p-3 bg-gray-800 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-black"
+            className="w-full p-4 bg-black/30 border-2 border-blue-900/50 rounded-lg 
+              text-blue-200/90 focus:outline-none focus:border-cyan-400/60
+              focus:shadow-glow-blue transition-all placeholder-blue-600/70"
+            placeholder="ENTER GATE DESIGNATION"
           />
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-blue-300">Mission Description</label>
+          <label className="block text-sm text-blue-400/80 mb-2 tracking-wider">⫸ GATE PARAMETERS</label>
           <textarea
             name="description"
             value={mission.description}
             onChange={handleMissionChange}
-            className="w-full p-3 bg-gray-800 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-black"
+            className="w-full p-4 bg-black/30 border-2 border-blue-900/50 rounded-lg 
+              text-blue-200/90 focus:outline-none focus:border-cyan-400/60
+              focus:shadow-glow-blue transition-all placeholder-blue-600/70 h-32"
+            placeholder="INPUT DUNGEON SPECIFICATIONS"
           ></textarea>
         </div>
 
-        <div>
-          <label className="block text-sm font-medium text-blue-300">Duration (in days)</label>
-          <input
-            type="number"
-            name="duration"
-            value={mission.duration}
-            onChange={handleMissionChange}
-            className="w-full p-3 bg-gray-800 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-black"
-          />
-        </div>
+        <div className="grid grid-cols-2 gap-6">
+          <div>
+            <label className="block text-sm text-blue-400/80 mb-2 tracking-wider">⫸ TIME DILATION</label>
+            <input
+              type="number"
+              name="duration"
+              value={mission.duration}
+              onChange={handleMissionChange}
+              className="w-full p-4 bg-black/30 border-2 border-blue-900/50 rounded-lg 
+                text-blue-200/90 focus:outline-none focus:border-cyan-400/60
+                focus:shadow-glow-blue transition-all"
+              placeholder="DAYS"
+            />
+          </div>
 
-        <div>
-          <label className="block text-sm font-medium text-blue-300">Difficulty</label>
-          <select
-            name="difficulty"
-            value={mission.difficulty}
-            onChange={handleMissionChange}
-            className="w-full p-3 bg-gray-800 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-black"
-          >
-            <option value="easy">Easy</option>
-            <option value="medium">Medium</option>
-            <option value="hard">Hard</option>
-          </select>
+          <div>
+            <label className="block text-sm text-blue-400/80 mb-2 tracking-wider">⫸ THREAT LEVEL</label>
+            <select
+              name="difficulty"
+              value={mission.difficulty}
+              onChange={handleMissionChange}
+              className="w-full p-4 bg-black/30 border-2 border-blue-900/50 rounded-lg 
+                text-blue-200/90 focus:outline-none focus:border-cyan-400/60
+                focus:shadow-glow-blue transition-all appearance-none"
+            >
+              <option value="easy" className="bg-black/90">E-RANK</option>
+              <option value="medium" className="bg-black/90">B-RANK</option>
+              <option value="hard" className="bg-black/90">S-RANK</option>
+            </select>
+          </div>
         </div>
       </div>
 
       {/* Quest Section */}
-      <h2 className="text-2xl font-bold mt-8 mb-4 text-blue-400 underline">Add Quests</h2>
-      <div className="flex items-center space-x-4">
-        <input
-          type="text"
-          name="name"
-          placeholder="Quest Name"
-          value={quest.name}
-          onChange={handleQuestChange}
-          className="flex-1 p-3 bg-gray-800 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-black"
-        />
-        <select
-          name="stat"
-          value={quest.stat}
-          onChange={handleQuestChange}
-          className="p-3 bg-gray-800 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-black"
-        >
-          <option value="strength">Strength</option>
-          <option value="dexterity">Dexterity</option>
-          <option value="intelligence">Intelligence</option>
-          <option value="charisma">Charisma</option>
-        </select>
-        <input
-          type="number"
-          name="exp"
-          placeholder="EXP"
-          value={quest.exp}
-          onChange={handleQuestChange}
-          className="w-20 p-3 bg-gray-800 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-black"
-        />
-        <button
-          type="button"
-          onClick={addQuest}
-          className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-4 py-2 rounded-lg shadow-lg"
-        >
-          Add
-        </button>
-      </div>
+      <div className="mb-12">
+        <h2 className="text-2xl font-bold mb-6 text-transparent bg-clip-text 
+          bg-gradient-to-r from-blue-400 to-cyan-400 tracking-widest">
+          // OBJECTIVE PROTOCOLS
+        </h2>
 
-      {/* Quest List */}
-      <div className="mt-6 space-y-2">
-        <h2 className="text-2xl font-bold text-blue-400 underline">Quests Added</h2>
-        {questList.map((q, index) => (
-          <div
-            key={index}
-            className="p-3 bg-gray-800 rounded-lg flex justify-between items-center shadow-lg border-l-4 border-blue-500"
+        <div className="flex gap-4 mb-6">
+          <input
+            type="text"
+            name="name"
+            placeholder="OBJECTIVE NAME"
+            value={quest.name}
+            onChange={handleQuestChange}
+            className="flex-1 p-4 bg-black/30 border-2 border-blue-900/50 rounded-lg 
+              text-blue-200/90 focus:outline-none focus:border-cyan-400/60
+              focus:shadow-glow-blue transition-all placeholder-blue-600/70"
+          />
+          
+          <select
+            name="stat"
+            value={quest.stat}
+            onChange={handleQuestChange}
+            className="p-4 bg-black/30 border-2 border-blue-900/50 rounded-lg 
+              text-blue-200/90 focus:outline-none focus:border-cyan-400/60
+              focus:shadow-glow-blue transition-all w-40"
           >
-            <span className="text-lg text-blue-200">
-              {q.name} - {q.stat} (<span className="text-green-400">{q.exp} EXP</span>)
-            </span>
-          </div>
-        ))}
+            <option value="strength" className="bg-black/90">MIGHT</option>
+            <option value="dexterity" className="bg-black/90">AGILITY</option>
+            <option value="intelligence" className="bg-black/90">ARCANA</option>
+            <option value="charisma" className="bg-black/90">CHARISMA</option>
+          </select>
+
+          <input
+            type="number"
+            name="exp"
+            placeholder="XP"
+            value={quest.exp}
+            onChange={handleQuestChange}
+            className="w-24 p-4 bg-black/30 border-2 border-blue-900/50 rounded-lg 
+              text-blue-200/90 focus:outline-none focus:border-cyan-400/60
+              focus:shadow-glow-blue transition-all"
+          />
+
+          <button
+            type="button"
+            onClick={addQuest}
+            className="px-6 bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-500 hover:to-cyan-500 
+              text-white font-bold rounded-lg shadow-glow-blue-lg transition-all
+              flex items-center justify-center"
+          >
+            INSERT
+          </button>
+        </div>
+
+        {/* Quest List */}
+        <div className="space-y-4">
+          {questList.map((q, index) => (
+            <div
+              key={index}
+              className="p-4 bg-black/20 rounded-lg border-2 border-blue-900/50
+                hover:border-cyan-400/60 hover:shadow-glow-blue transition-all"
+            >
+              <div className="flex justify-between items-center">
+                <span className="text-blue-300/90 tracking-wide">
+                  <span className="text-cyan-400/90">{q.name}</span> - 
+                  <span className="text-amber-400/90 ml-2">[{q.stat.toUpperCase()}]</span>
+                </span>
+                <span className="text-green-400/90 font-bold text-xl">
+                  +{q.exp}XP
+                </span>
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
 
-      {/* Submit Mission */}
+      {/* Submit Button */}
       <button
         type="button"
         onClick={submitMission}
-        className="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded-lg mt-6 shadow-lg"
+        className="w-full py-5 bg-gradient-to-r from-blue-700 to-cyan-700 
+          hover:from-blue-600 hover:to-cyan-600 text-white font-black 
+          rounded-2xl shadow-glow-blue-lg transition-all tracking-widest
+          text-xl uppercase border-2 border-cyan-400/30 hover:border-cyan-400/60"
       >
-        Submit Mission
+        ACTIVATE GATE
       </button>
     </div>
   );

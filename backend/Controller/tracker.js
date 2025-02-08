@@ -1,26 +1,26 @@
 const { Tracker } = require('../Model/Tracker');
-const {Mission}=require('../Model/mission')
-const {addUserReward, updateUserStats}=require('./stat')
+const { Mission } = require('../Model/mission')
+const { addUserReward, updateUserStats } = require('./stat')
 
 //adds Tracker 
 const createTracker = async (userId, mission) => {
-    try {
-        const tracker = await Tracker.create({
-            userId: userId,
-            missionId: mission._id,
-            questSet: mission.quests, // Initialize with all quests from the mission
-            streak: 0, // Initial streak is 0
-            duration:mission.duration,
-            lastUpdated: Date.now(), // Track when the tracker was created 
-  
+  try {
+    const tracker = await Tracker.create({
+      userId: userId,
+      missionId: mission._id,
+      questSet: mission.quests, // Initialize with all quests from the mission
+      streak: 0, // Initial streak is 0
+      duration: mission.duration,
+      lastUpdated: Date.now(), // Track when the tracker was created 
 
-        });
 
-        return tracker;
-    } catch (error) {
-        console.error("Failed to create tracker:", error);
-        throw new Error("Tracker creation failed");
-    }
+    });
+
+    return tracker;
+  } catch (error) {
+    console.error("Failed to create tracker:", error);
+    throw new Error("Tracker creation failed");
+  }
 };
 
 //update tracker  will receive request via http
@@ -29,7 +29,7 @@ const updateQuestCompletion = async (req, res) => {
   const { missionId, questId } = req.body;
 
   try {
-    // Fetch the tracker
+    // Fetch the tracker with mission details
     const tracker = await Tracker.findOne({ userId, missionId }).populate('missionId');
 
     if (!tracker) {
@@ -37,14 +37,6 @@ const updateQuestCompletion = async (req, res) => {
         success: false,
         message: 'Tracker not found for the given user and mission.',
       });
-    }
-
-    const todayStart = new Date().setHours(0, 0, 0, 0);
-
-    // Reset questSet if lastUpdated is outdated
-    if (tracker.lastUpdated < todayStart) {
-      tracker.questSet = tracker.missionId.quests; // Reset to the full quest set
-      tracker.lastUpdated = todayStart; // Use todayStart directly
     }
 
     // Validate questId
@@ -58,9 +50,8 @@ const updateQuestCompletion = async (req, res) => {
 
     // Remove the quest and update tracker
     tracker.questSet.splice(questIndex, 1);
-
     // Update user stats
-    const statsResult = await updateUserStats(userId, questId);
+    let statsResult = await updateUserStats(userId, questId, 0);
     if (!statsResult.success) {
       return res.status(500).json({
         success: false,
@@ -69,16 +60,28 @@ const updateQuestCompletion = async (req, res) => {
       });
     }
 
+    const mission = tracker.missionId; // Store mission details
+    let isMissionCompleted = false;
+
     // Handle streaks and mission completion
     if (tracker.questSet.length === 0) {
-      tracker.streak += 1; // Increment streak
-      tracker.lastUpdated = todayStart;
+      tracker.streak += 1;
+      tracker.lastUpdated = new Date();
+      
+      let streakStatsResult = await updateUserStats(userId, questId, 1);
+      if (!streakStatsResult.success) {
+        return res.status(500).json({
+          success: false,
+          message: 'Streak updated, but failed to update user stats.',
+          error: streakStatsResult.error,
+        });
+      }
 
-      if (tracker.streak === tracker.missionId.duration) {
-        const rewardPoints = tracker.missionId.reward_points;
-
-        // Add rewards to user
+      // If mission is fully completed
+      if (tracker.streak === mission.duration) {
+        const rewardPoints = mission.reward_points;
         const rewardResult = await addUserReward(userId, rewardPoints, missionId);
+
         if (!rewardResult.success) {
           return res.status(500).json({
             success: false,
@@ -88,6 +91,7 @@ const updateQuestCompletion = async (req, res) => {
         }
 
         await deleteMissionTracker(userId, missionId);
+        isMissionCompleted = true;
 
         return res.status(200).json({
           success: true,
@@ -95,6 +99,7 @@ const updateQuestCompletion = async (req, res) => {
           streak: tracker.streak,
           isCompleted: true,
           updatedStats: rewardResult.updatedStats,
+          updatedExp: rewardResult.updatedExp,
         });
       }
     }
@@ -106,8 +111,9 @@ const updateQuestCompletion = async (req, res) => {
       success: true,
       message: `Quest completed successfully! ${statsResult.message}`,
       streak: tracker.streak,
-      isCompleted: false,
+      isCompleted: isMissionCompleted,
       updatedStats: statsResult.updatedStats,
+      updatedExp: statsResult.updatedExp,
     });
   } catch (error) {
     console.error('Error updating quest completion and user stats:', error);
@@ -118,6 +124,7 @@ const updateQuestCompletion = async (req, res) => {
     });
   }
 };
+
 
 
 // Delete Tracker 
@@ -154,4 +161,4 @@ const deleteMissionTracker = async (userId, missionId) => {
 // addReward Function
 
 
-module.exports = { createTracker ,updateQuestCompletion,deleteMissionTracker};
+module.exports = { createTracker, updateQuestCompletion, deleteMissionTracker };

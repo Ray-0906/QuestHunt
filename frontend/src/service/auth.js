@@ -1,7 +1,7 @@
 import axios from "axios";
 import { login, logout } from "../store/authSlice";
 
-const endpoint = "http://localhost:8000";
+const endpoint = import.meta.env.VITE_API_URL ;
 
 // Login action
 export const loginUser = (email, password) => async (dispatch) => {

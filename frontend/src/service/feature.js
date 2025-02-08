@@ -1,15 +1,14 @@
 import axios from "axios";
-import { addMission, removeMission } from "../store/authSlice";
-import { useDispatch } from "react-redux";
+
 // Helper to get the auth token (replace with your actual implementation)
 const getAuthToken = () => {
   // Example: Retrieve token from localStorage
   return localStorage.getItem("token");
 };
-const endpoint='http://localhost:8000';
+const endpoint=   import.meta.env.VITE_API_URL;
 // seeting the base url
 const apiClient = axios.create({
-  baseURL: "http://localhost:8000", // Set your API's base URL
+  baseURL: endpoint, // Set your API's base URL
 });
 
 // Intercept request to add the token
@@ -21,7 +20,17 @@ apiClient.interceptors.request.use((config) => {
   return config;
 });
 
-
+// GEt Rankings Api
+export const getRankings = async ()=>{
+  try {
+    const response = await apiClient.get('/get/rankings');
+    console.log(response.data.users);
+    return response.data.users || [];
+  } catch (error) {
+    console.error('Failed to get Rankings:', error);
+    throw error;
+  }
+}
 
 // Qust Complition 
 
@@ -65,7 +74,7 @@ export const getMission = async (missionId) => {
     const response = await apiClient.post('/get/mission', { missionId });
 
     // Return the mission from the response
-    return response.data.mission; // Assuming `response.data.mission` contains the desired mission data
+    return response.data; // Assuming `response.data.mission` contains the desired mission data
   } catch (error) {
     console.error('Failed to get Mission Data:', error);
     throw error; // Rethrow the error for the caller to handle

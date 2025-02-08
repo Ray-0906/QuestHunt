@@ -1,28 +1,28 @@
 import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { useNavigate, useLocation } from 'react-router-dom';
+import SoloLoading from './Loading';
 
 export default function AuthLayout({ children, Authentication = true }) {
     const authStatus = useSelector((state) => state.auth.status);
     const navigate = useNavigate();
+    const location = useLocation(); // Get the current location
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         if (Authentication && !authStatus) {
-            // If the route requires authentication but the user is not authenticated, redirect to login.
-            navigate('/login');
+            // Store the intended destination and redirect to login
+            navigate(`/login?redirect=${location.pathname}`, { replace: true });
         } else if (!Authentication && authStatus) {
-            // If the user is authenticated but accessing a public route (like login/signup), redirect to home.
-            navigate('/');
+            // If authenticated and on a public route, redirect to intended or home
+            const redirectPath = new URLSearchParams(location.search).get('redirect') || '/';
+            navigate(redirectPath, { replace: true });
         } else {
-            // If everything is fine, stop loading.
             setLoading(false);
         }
-    }, [navigate, authStatus, Authentication]);
+    }, [authStatus, navigate, location.pathname, Authentication]);
 
-    if (loading) {
-        return <h1>Loading...</h1>;
-    }
+    if (loading) return <SoloLoading />;
 
     return <>{children}</>;
 }

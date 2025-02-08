@@ -1,6 +1,11 @@
+require('dotenv').config();
+
+
 const express=require('express');
 const app=express();
 const port=8000;
+
+
 const {connectDb}=require('./config')
 const userRoute=require('./routes/user');
 const infoRoute=require('./routes/info')
@@ -9,7 +14,7 @@ const {authenticateToken}=require('./Middleware/auth')
 const cors = require('cors');
 
 // connection with db
-const urll="mongodb://127.0.0.1:27017/lrpg"
+const urll=process.env.MONGO_URL ;
 connectDb(urll);
 
 //cors tackling

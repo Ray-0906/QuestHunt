@@ -30,56 +30,122 @@ const StatusCard = () => {
   }
 
   return (
-    <div className="bg-gradient-to-b from-gray-900 via-gray-800 to-black mx-auto shadow-2xl text-white p-6 max-w-md md:max-w-lg lg:max-w-xl rounded-xl border border-blue-500">
+    <div className="relative bg-[#0a0a15]/95 backdrop-blur-sm mx-auto p-8 max-w-2xl rounded-2xl 
+      border border-blue-500/30 shadow-2xl shadow-blue-900/30
+      font-mono before:absolute before:inset-0 before:bg-[linear-gradient(130deg,#00f6ff12_35%,#0000_65%)]">
+      
+      {/* Glowing Border Effect */}
+      <div className="absolute inset-0 rounded-2xl pointer-events-none 
+        border border-blue-500/20 shadow-[inset_0_0_20px_rgba(0,198,255,0.1)]" />
+
       {/* Header */}
-      <div className="text-center border-b border-blue-500 pb-4 mb-6">
-        <h2 className="text-3xl font-bold tracking-wide text-blue-400">STATUS WINDOW</h2>
+      <div className="text-center border-b border-blue-900/50 pb-4 mb-8 relative">
+        <div className="absolute -bottom-px left-0 right-0 h-px bg-gradient-to-r from-transparent via-blue-600 to-transparent" />
+        <h2 className="text-3xl font-bold text-transparent bg-clip-text 
+          bg-gradient-to-br from-blue-400 via-blue-300 to-cyan-400 tracking-widest
+          drop-shadow-[0_0_8px_rgba(0,198,255,0.4)] uppercase">
+          PLAYER STATUS
+        </h2>
       </div>
 
-      {/* User Info Section */}
-      <div className="profile-container grid grid-cols-1 sm:grid-cols-3 gap-6 items-center mb-6">
-        <div className="sm:col-span-2 space-y-2">
-          <p className="text-lg text-gray-300">
-            <strong className="text-blue-400">NAME:</strong> {data.username || "Unknown"}
-          </p>
-          <p className="text-lg text-gray-300">
-            <strong className="text-blue-400">JOB:</strong> {data.profile.job || "Unemployed"}
-          </p>
-          <p className="text-lg text-gray-300">
-            <strong className="text-blue-400">TITLE:</strong> {data.profile.title || "None"}
-          </p>
+      {/* Profile Section */}
+      <div className="flex justify-center my-3 block md:hidden">
+          <Avatar 
+            src="/mc.png" 
+            size="120px"
+            className="border-2 border-blue-600/50 rounded-full 
+              shadow-glow-blue hover:border-cyan-400/60 transition-all
+              hover:shadow-[0_0_30px_rgba(0,198,255,0.3)]"
+          />
         </div>
-        <div className="flex justify-center items-center">
-          <Avatar src="/mc.png" size="80px" className="border border-blue-500 rounded-full shadow-lg" />
+      <div className="grid grid-cols-4 gap-8 mb-10">
+        <div className="col-span-3 space-y-4">
+          <div className="flex items-center space-x-4 group">
+            <span className="text-blue-400/80 text-lg tracking-wider">⫸ IDENT:</span>
+            <p className="text-xl text-blue-200/90 tracking-wide uppercase font-semibold">
+              {data.username || "UNKNOWN_ENTITY"}
+            </p>
+          </div>
+          
+          <div className="flex items-center space-x-4">
+            <span className="text-blue-400/80 text-lg tracking-wider">⫸ CLASS:</span>
+            <p className="text-xl text-blue-200/90 tracking-wide font-semibold">
+              {data.profile.job || "ASCENDANT"}
+            </p>
+          </div>
+
+          <div className="flex items-center space-x-4">
+            <span className="text-blue-400/80 text-lg tracking-wider">⫸ TITLE:</span>
+            <p className="text-xl text-amber-400/90 tracking-wide font-semibold">
+              {data.profile.title || "SHADOW WALKER"}
+            </p>
+          </div>
+        </div>
+
+        <div className="flex justify-end hidden md:block">
+          <Avatar 
+            src="/mc.png" 
+            size="120px"
+            className="border-2 border-blue-600/50 rounded-full 
+              shadow-glow-blue hover:border-cyan-400/60 transition-all
+              hover:shadow-[0_0_30px_rgba(0,198,255,0.3)]"
+          />
         </div>
       </div>
 
       {/* Level Display */}
-      <div className="flex justify-center items-end mb-6">
-        <p className="text-4xl sm:text-5xl font-medium text-gray-500">Lv.</p>
-        <h1 className="text-6xl sm:text-7xl font-extrabold text-blue-400 ml-2 animate-glow">
+      <div className="text-center mb-10 relative">
+        <div className="absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-blue-600 to-transparent" />
+        <p className="text-2xl text-blue-400/80 mb-2 tracking-widest">
+          MONARCH LEVEL
+        </p>
+        <h1 className="text-8xl font-black text-transparent bg-clip-text 
+          bg-gradient-to-br from-blue-400 to-cyan-400 
+          drop-shadow-[0_0_20px_rgba(0,198,255,0.5)] animate-pulse-slow">
           {levelData.level}
         </h1>
+        <p className="text-sm text-blue-400/60 mt-2 tracking-wide">
+          {levelData.currentLevelProgress} / {levelData.xpGap} XP TO NEXT ASCENSION
+        </p>
       </div>
 
       {/* XP Progress Bar */}
-      <ProgressBar
-        exp={data.profile.exp}
-        label="XP Progress"
-        className="mb-6 text-blue-400"
-      />
+      <div className="mb-12">
+        <ProgressBar 
+          exp={data.profile.exp}
+          label="ESSENCE ACCUMULATION"
+          className="text-blue-400"
+          theme="solo-leveling"
+        />
+      </div>
 
       {/* Stats Section */}
-      <div className="mb-4 mt-6 border-t border-blue-500 pt-4">
-        <h2 className="text-xl font-semibold text-center mb-4 text-blue-400">STATS</h2>
-        <div className="grid grid-cols-2 gap-4">
+      <div className="border-t border-blue-900/50 pt-8">
+        <h3 className="text-2xl text-center text-transparent bg-clip-text 
+          bg-gradient-to-r from-blue-400 to-cyan-400 font-bold mb-8
+          drop-shadow-[0_0_8px_rgba(0,198,255,0.4)]">
+          ASCENDANT ATTRIBUTES
+        </h3>
+        <div className="grid grid-cols-2 gap-6">
           {Object.entries(data.profile.stats).map(([statName, value]) => (
-            <ProgressBar
-              key={statName}
-              exp={value}
-              label={`${statName.toUpperCase()}:`}
-              className="text-sm text-blue-300"
-            />
+            <div key={statName} className="p-4 bg-black/20 rounded-lg 
+              border border-blue-900/50 hover:border-blue-600/70 transition-all
+              hover:shadow-glow-blue">
+              <div className="flex justify-between items-center mb-2">
+                <span className="text-blue-400/80 tracking-wider">
+                  ⚔️ {statName.toUpperCase()}
+                </span>
+                <span className="text-cyan-400/90 font-bold text-xl">
+                  {getLevelDetails(value).level}
+                </span>
+              </div>
+              <ProgressBar
+                exp={value}
+                theme="solo-leveling"
+                className="text-xs"
+                hideLabel
+              />
+            </div>
           ))}
         </div>
       </div>

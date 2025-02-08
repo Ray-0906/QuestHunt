@@ -4,7 +4,7 @@ const jwt = require('jsonwebtoken');
 
 
 // Secret key for JWT (Store this in your environment variables)
-const JWT_SECRET = process.env.JWT_SECRET || 'your_secret_key';
+const JWT_SECRET = process.env.JWT_SECRET ;
 
 // signup
 // Replace with a strong secret

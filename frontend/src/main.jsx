@@ -11,20 +11,28 @@ import Login from './Pages/Login.jsx';
 import Signup from './Pages/Signup.jsx';
 import Mission from './Pages/Mission.jsx';
 import AuthLayout from './Component/Authlayout.jsx';
-
+import Home from './Pages/home.jsx';
+import Ranking from './Pages/Ranking.jsx';
+Ranking
 const router = createBrowserRouter([
   {
     path: '/',
     element: <App />,
     children: [
       { path: '/', element: 
+        <Home />
+         },,
+      { path: '/quests', element: 
       <AuthLayout><Mission /></AuthLayout>
        },
+       { path: '/home', element: 
+        <Home />
+         },
       {
         path: '/login',
         element: (
           <AuthLayout Authentication={false}>
-            <Login />
+            <Login/>
           </AuthLayout>
         ),
       },
@@ -39,7 +47,16 @@ const router = createBrowserRouter([
         path: '/profile',
         element: (
           
-            <Profile />
+            <AuthLayout><Profile /></AuthLayout>
+         
+          
+        ),
+      },
+      {
+        path: '/rankings',
+        element: (
+          
+            <AuthLayout><Ranking /></AuthLayout>
          
           
         ),
@@ -48,8 +65,8 @@ const router = createBrowserRouter([
       {
         path: '/add-mission',
         element: (
-         
-            <AddMission />
+         <AuthLayout><AddMission /></AuthLayout>
+            
          
         ),
       },
