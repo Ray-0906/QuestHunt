@@ -15,7 +15,7 @@ export function getLevelDetails(totalExp, baseExp = 10, growthFactor = 1.5) {
 
     //const xpForCurrentLevel = getExpForLevel(level );
     
-    const xpGap = getExpForLevel(level+1);
+    const xpGap = getExpForLevel(level);
   
     // Current progress within the level
     const currentLevelProgress = totalExp; // Remaining XP after subtracting completed levels
