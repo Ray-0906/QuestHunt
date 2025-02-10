@@ -48,7 +48,7 @@ const handleSignup = async (req, res) => {
         const token = jwt.sign(
             { id: user._id, username: user.username },
             JWT_SECRET,
-            { expiresIn: "1d" }
+            { expiresIn: "7d" }
         );
 
         // Return a response (exclude sensitive information like hashed password)
@@ -97,7 +97,7 @@ const handleLogin = async (req, res) => {
         const token = jwt.sign(
             { id: user._id, username: user.username, email: user.email },
             JWT_SECRET,
-            { expiresIn: '1d' } // Token expires in 1 hour
+            { expiresIn: "7d" } // Token expires in 1 hour
         );
 
         // Send response with the token
